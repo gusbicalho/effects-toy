@@ -3,7 +3,35 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    cabal-file:
+      size: 2938
+      sha256: b62e27f6d6e9299f46be99bca47442e8aef04ab98b201cd568c3c04c6831202b
+    name: sqlite-simple
+    version: 0.4.16.0
+    git: git@github.com:mvoidex/sqlite-simple.git
+    pantry-tree:
+      size: 1995
+      sha256: 68fbe4f81c18a799f6c3aaee66eafc35a66dc8209cba3243d112832b678b44a4
+    commit: cc94f6e303b19aeaed2ac21cbccf6f5c7b74274d
+  original:
+    git: git@github.com:mvoidex/sqlite-simple.git
+    commit: cc94f6e303b19aeaed2ac21cbccf6f5c7b74274d
+- completed:
+    hackage: direct-sqlite-2.3.24@sha256:869bcfd5e9cf1f8b76af3cb6709969298eca3a7b376a847158110b3c083cd431,3760
+    pantry-tree:
+      size: 770
+      sha256: 5fb383f2bd32c560e474cc60c6f958f3c0e6deed115fa4e69c7b6d913bfcc8ce
+  original:
+    hackage: direct-sqlite-2.3.24@sha256:869bcfd5e9cf1f8b76af3cb6709969298eca3a7b376a847158110b3c083cd431,3760
+- completed:
+    hackage: semigroups-0.18.5@sha256:41ef9f5f183f66c519c5cddcb3fbfdbc9b67a2b7bfae7d81f91de9ff7367d8c6,5828
+    pantry-tree:
+      size: 533
+      sha256: 7fe152b45de8c6a929db10c68b0576e35f7054492c528e8aa10cb1af2fc80953
+  original:
+    hackage: semigroups-0.18.5@sha256:41ef9f5f183f66c519c5cddcb3fbfdbc9b67a2b7bfae7d81f91de9ff7367d8c6,5828
 snapshots:
 - completed:
     size: 435321
