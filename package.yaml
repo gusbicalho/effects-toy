@@ -66,10 +66,14 @@ default-extensions:
 - ViewPatterns
 
 dependencies:
-- base >= 4.7 && < 5
-- fused-effects
 - aeson
+- base >= 4.7 && < 5
+- bytestring
+- fused-effects
+- http-types
 - sqlite-simple
+- streaming
+- streaming-bytestring
 - text
 - time
 - wai

@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import qualified EffectsToy
 
 main :: IO ()
-main = someFunc
+main = EffectsToy.start
