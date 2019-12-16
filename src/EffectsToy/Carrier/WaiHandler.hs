@@ -2,10 +2,10 @@
 {-# LANGUAGE PartialTypeSignatures #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-partial-type-signatures #-}
-module EffectsToy.Carrier.WaiApplication
-  ( WaiApplicationC, runWaiApplicationC
-  , runWaiApplication
-  , module EffectsToy.Effect.WaiApplication
+module EffectsToy.Carrier.WaiHandler
+  ( WaiHandlerC, runWaiHandlerC
+  , runWaiHandler
+  , module EffectsToy.Effect.WaiHandler
   ) where
 
 import           Control.Algebra
@@ -18,10 +18,10 @@ import           Control.Carrier.Writer.Strict
 import qualified EffectsToy.Carrier.ByteStream as BS
 import           EffectsToy.Carrier.ByteStream ( Of(..) )
 
-import           EffectsToy.Effect.WaiApplication
+import           EffectsToy.Effect.WaiHandler
 
-newtype WaiApplicationC m a = WaiApplicationC {
-  runWaiApplicationC :: StateC
+newtype WaiHandlerC m a = WaiHandlerC {
+  runWaiHandlerC :: StateC
                           HTTP.Status
                           (WriterC
                             HTTP.ResponseHeaders
@@ -37,36 +37,23 @@ newtype WaiApplicationC m a = WaiApplicationC {
 instance ( Algebra sig m
          , Effect sig
          , Has (BS.ByteStream) sig m
-         ) => Algebra (WaiApplication :+: sig) (WaiApplicationC m) where
-  alg (L (AskRequest k))          = k =<< WaiApplicationC (ask)
-  alg (L (TellHeaders headers k)) = k << WaiApplicationC (tell headers)
-  alg (L (PutStatus status k))    = k << WaiApplicationC (put status)
+         ) => Algebra (WaiHandler :+: sig) (WaiHandlerC m) where
+  alg (L (AskRequest k))          = k =<< WaiHandlerC (ask)
+  alg (L (TellHeaders headers k)) = k << WaiHandlerC (tell headers)
+  alg (L (PutStatus status k))    = k << WaiHandlerC (put status)
   alg (L (SendChunk chunk k))     = k << BS.sendChunk chunk
   alg (R other) = send other
   {-# INLINE alg #-}
 
-handleRequest :: (Has BS.ByteStream sig m)
+runWaiHandler :: (Has BS.ByteStream sig m)
               => Wai.Request
-              -> WaiApplicationC m ()
+              -> WaiHandlerC m ()
               -> m (HTTP.ResponseHeaders, HTTP.Status)
-handleRequest request waiApp = do
+runWaiHandler request waiApp = do
   result <- runReader @Wai.Request request
           . runWriter @HTTP.ResponseHeaders
           . runState @HTTP.Status HTTP.status500
-          . runWaiApplicationC
+          . runWaiHandlerC
           $ waiApp
   let (headers, (status , ())) = result
   return (headers, status)
-
-runWaiApplication :: (Has BS.ByteStream sig m, Monad n)
-                  => (forall x. m x -> n (BS.ByteString `Of` x))
-                  -> WaiApplicationC m ()
-                  -> Wai.Request
-                  -> (Wai.Response -> n b) -> n b
-runWaiApplication runByteStream waiApp request respond = do
-  result <-
-    runByteStream
-    . handleRequest request
-    $ waiApp
-  let (respBody :> (headers, status)) = result
-  respond (Wai.responseLBS status headers respBody)
