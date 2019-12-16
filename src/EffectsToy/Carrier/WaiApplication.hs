@@ -57,8 +57,7 @@ newtype WaiApplicationC m a = WaiApplicationC {
                             HTTP.ResponseHeaders
                             (ReaderC
                               Wai.Request
-                              (LiftC
-                                (Streaming.ByteString m))))
+                              m))
                           a
   } deriving newtype (Functor, Applicative, Monad)
 
@@ -67,16 +66,17 @@ newtype WaiApplicationC m a = WaiApplicationC {
 
 instance ( Algebra sig m
          , Effect sig
+         , Has (Lift (Streaming.ByteString IO)) sig m
          ) => Algebra (WaiApplication :+: sig) (WaiApplicationC m) where
   alg (L (AskRequest k))          = k =<< WaiApplicationC (ask)
   alg (L (TellHeaders headers k)) = k << WaiApplicationC (tell headers)
   alg (L (PutStatus status k))    = k << WaiApplicationC (put status)
-  alg (L (SendChunk chunk k))     = k << WaiApplicationC (sendM @(Streaming.ByteString m) (Streaming.fromStrict chunk))
+  alg (L (SendChunk chunk k))     = k << sendM @(Streaming.ByteString IO) (Streaming.fromStrict chunk)
   alg (R other) = send other
   {-# INLINE alg #-}
 
-handleWaiRequest :: Monad m => WaiApplicationC m () -> Wai.Request -> m Wai.Response
-handleWaiRequest waiApp request = do
+runWaiApplication :: WaiApplicationC _ () -> Wai.Application
+runWaiApplication waiApp request respond = do
   result <-
     Streaming.toLazy
     . runM
@@ -86,9 +86,4 @@ handleWaiRequest waiApp request = do
     . runWaiApplicationC
     $ waiApp
   let (respBody :> (headers, (status, ()))) = result
-  return (Wai.responseLBS status headers respBody)
-
-runWaiApplication :: WaiApplicationC IO () -> Wai.Application
-runWaiApplication waiApp request respond = do
-  response <- handleWaiRequest waiApp request
-  respond response
+  respond (Wai.responseLBS status headers respBody)
