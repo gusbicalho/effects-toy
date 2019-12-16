@@ -15,9 +15,7 @@ import qualified Network.HTTP.Types as HTTP
 import           Control.Carrier.Reader
 import           Control.Carrier.State.Strict
 import           Control.Carrier.Writer.Strict
-import qualified EffectsToy.Carrier.ByteStream as BS
-import           EffectsToy.Carrier.ByteStream ( Of(..) )
-
+import qualified EffectsToy.Effect.ByteStream as BS
 import           EffectsToy.Effect.WaiHandler
 
 newtype WaiHandlerC m a = WaiHandlerC {
