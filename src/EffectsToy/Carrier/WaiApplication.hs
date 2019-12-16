@@ -3,20 +3,14 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-partial-type-signatures #-}
 module EffectsToy.Carrier.WaiApplication
-  ( WaiApplication (..)
-  , askRequest, tellHeaders, putStatus, sendChunk
-  -- Carrier
-  , WaiApplicationC, runWaiApplicationC
+  ( WaiApplicationC, runWaiApplicationC
   , runWaiApplication
-  , Has
+  , module EffectsToy.Effect.WaiApplication
   ) where
-
-import GHC.Generics (Generic1)
 
 import Control.Algebra
 import qualified Network.Wai as Wai
 import qualified Network.HTTP.Types as HTTP
-import qualified Data.ByteString as BS
 
 import Control.Carrier.Reader
 import Control.Carrier.State.Strict
@@ -25,30 +19,7 @@ import Control.Carrier.Lift
 import qualified Data.ByteString.Streaming as Streaming
 import           Data.Functor.Of ( Of(..))
 
-
-
--- Effect interface
-
-data WaiApplication m k
-  = AskRequest (Wai.Request -> m k)
-  | TellHeaders HTTP.ResponseHeaders (m k)
-  | PutStatus HTTP.Status (m k)
-  | SendChunk BS.ByteString (m k)
-  deriving (Generic1, Functor, HFunctor, Effect)
-
-askRequest :: (Has WaiApplication sig m) => m Wai.Request
-askRequest = send $ AskRequest pure
-
-tellHeaders :: (Has WaiApplication sig m) => HTTP.ResponseHeaders -> m ()
-tellHeaders headers = send $ TellHeaders headers (pure ())
-
-putStatus :: (Has WaiApplication sig m) => HTTP.Status -> m ()
-putStatus status = send $ PutStatus status (pure ())
-
-sendChunk :: (Has WaiApplication sig m) => BS.ByteString -> m ()
-sendChunk chunk = send $ SendChunk chunk (pure ())
-
--- Carrier
+import EffectsToy.Effect.WaiApplication
 
 newtype WaiApplicationC m a = WaiApplicationC {
   runWaiApplicationC :: StateC
