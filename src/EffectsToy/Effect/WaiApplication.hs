@@ -8,9 +8,8 @@ module EffectsToy.Effect.WaiApplication
   , run
   ) where
 
-import GHC.Generics (Generic1)
-
-import Control.Algebra
+import           GHC.Generics (Generic1)
+import           Control.Algebra
 import qualified Network.Wai as Wai
 import qualified Network.HTTP.Types as HTTP
 import qualified Data.ByteString as BS
