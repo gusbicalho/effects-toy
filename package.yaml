@@ -71,6 +71,7 @@ dependencies:
 - bytestring
 - fused-effects
 - http-types
+- mtl
 - sqlite-simple
 - streaming
 - streaming-bytestring
