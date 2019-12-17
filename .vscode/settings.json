@@ -1,3 +1,7 @@
 {
-  "hic.executablePath": "./ghcide"
+  "hic.executablePath": "./ghcide",
+  "editor.detectIndentation": false,
+  "editor.autoIndent": "advanced",
+  "editor.tabSize": 2,
+  "haskell.indentationRules.enabled": false
 }
