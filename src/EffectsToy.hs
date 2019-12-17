@@ -28,6 +28,6 @@ helloWorld :: ( Has WaiHandler sig m )
 helloWorld = do
   req <- askRequest
   tellHeaders [(HTTP.hContentType, "text/plain")]
-  tellChunk $ "Hello, world!\n"
-  tellChunk $ "You requested " <> (Wai.rawQueryString req)
+  tellChunk "Hello, world!\n"
+  tellChunk $ "You requested " <> Wai.rawQueryString req
   putStatus HTTP.ok200

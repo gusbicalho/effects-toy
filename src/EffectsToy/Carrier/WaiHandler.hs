@@ -41,7 +41,7 @@ instance ( Algebra sig m
   alg (L (TellHeaders headers k)) = k << WaiHandlerC (tell headers)
   alg (L (PutStatus status k))    = k << WaiHandlerC (put status)
   alg (L (TellChunk chunk k))     = k << WaiHandlerC (tell (LBS.fromStrict chunk))
-  alg (R other) = send other
+  alg (R other)                   = send other
   {-# INLINE alg #-}
 
 runWaiHandler :: (Monad m)
