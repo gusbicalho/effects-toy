@@ -9,27 +9,27 @@ import qualified Network.HTTP.Types as HTTP
 import qualified Network.Wai.Handler.Warp as Warp
 import           Control.Carrier.Lift
 import           EffectsToy.Carrier.WaiHandler
+import           EffectsToy.Carrier.ByteStream.Strict (runByteStream)
 import qualified Data.ByteString.Lazy as LBS
-import           Control.Carrier.Writer.Strict
 
 start :: IO ()
 start = Warp.run 8087 (runWaiApplication helloWorld)
 
 runWaiApplication :: WaiHandlerC _ () -> Wai.Application
 runWaiApplication waiApp request respond = do
-  putStrLn "1"
-  result <-
-    runM
-    . runWaiHandler request (runWriter @LBS.ByteString)
-    $ waiApp
-  putStrLn "2"
-  respond result
+  (body, (headers, status)) <- runM
+                               . runByteStream
+                               . runWaiHandler request
+                               $ waiApp
+  respond $ Wai.responseLBS status headers body
 
-helloWorld :: ( Has WaiHandler sig m )
-           => m ()
+helloWorld :: ( Has WaiHandler sig m
+              , Has (Lift IO) sig m
+              ) => m ()
 helloWorld = do
   req <- askRequest
+  sendM (putStrLn "here")
   tellHeaders [(HTTP.hContentType, "text/plain")]
   tellChunk "Hello, world!\n"
-  tellChunk $ "You requested " <> Wai.rawQueryString req
+  tellChunk $ "You requested " <> LBS.fromStrict (Wai.rawQueryString req)
   putStatus HTTP.ok200
