@@ -25,9 +25,7 @@ newtype WaiHandlerC m a = WaiHandlerC {
                             HTTP.ResponseHeaders
                             (ReaderC
                               Wai.Request
-                              (WriterC
-                                LBS.ByteString
-                                m)))
+                              m))
                           a
   } deriving newtype (Functor, Applicative, Monad)
 
@@ -36,6 +34,7 @@ newtype WaiHandlerC m a = WaiHandlerC {
 
 instance ( Algebra sig m
          , Effect sig
+         , Has (Writer LBS.ByteString) sig m
          ) => Algebra (WaiHandler :+: sig) (WaiHandlerC m) where
   alg (L (AskRequest k))          = k =<< WaiHandlerC (ask)
   alg (L (TellHeaders headers k)) = k << WaiHandlerC (tell headers)
@@ -44,16 +43,13 @@ instance ( Algebra sig m
   alg (R other)                   = send other
   {-# INLINE alg #-}
 
-runWaiHandler :: (Monad m)
-              => Wai.Request
-              -> WaiHandlerC m ()
-              -> m Wai.Response
-runWaiHandler request waiApp = do
-  result <- runWriter @LBS.ByteString
-          . runReader @Wai.Request request
-          . runWriter @HTTP.ResponseHeaders
-          . runState @HTTP.Status HTTP.status500
-          . runWaiHandlerC
-          $ waiApp
-  let (body, (headers, (status , ()))) = result
-  return $ Wai.responseLBS status headers body
+runWaiHandler :: Monad m => Wai.Request -> (forall m a. q m a -> m (LBS.ByteString, a)) -> WaiHandlerC (q m) () -> m Wai.Response
+runWaiHandler request runBSWriter waiApp = do
+    result <- runBSWriter
+            . runReader @Wai.Request request
+            . runWriter @HTTP.ResponseHeaders
+            . runState @HTTP.Status HTTP.status500
+            . runWaiHandlerC
+            $ waiApp
+    let (!body, (headers, (status , ()))) = result
+    return $ Wai.responseLBS status headers body

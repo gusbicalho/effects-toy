@@ -9,6 +9,8 @@ import qualified Network.HTTP.Types as HTTP
 import qualified Network.Wai.Handler.Warp as Warp
 import           Control.Carrier.Lift
 import           EffectsToy.Carrier.WaiHandler
+import qualified Data.ByteString.Lazy as LBS
+import           Control.Carrier.Writer.Strict
 
 start :: IO ()
 start = Warp.run 8087 (runWaiApplication helloWorld)
@@ -18,7 +20,7 @@ runWaiApplication waiApp request respond = do
   putStrLn "1"
   result <-
     runM
-    . runWaiHandler request
+    . runWaiHandler request (runWriter @LBS.ByteString)
     $ waiApp
   putStrLn "2"
   respond result
