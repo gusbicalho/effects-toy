@@ -29,17 +29,14 @@ newtype WaiHandlerC m a = WaiHandlerC {
                       a
   } deriving newtype (Functor, Applicative, Monad)
 
-(<<) :: Monad m => m a -> m b -> m a
-(<<) = flip (>>)
-
 instance ( Algebra sig m
          , Effect sig
          , Has ByteStream.ByteStream sig m
          ) => Algebra (WaiHandler :+: sig) (WaiHandlerC m) where
   alg (L (AskRequest k))          = k =<< WaiHandlerC (ask)
-  alg (L (TellHeaders headers k)) = k  << WaiHandlerC (tell headers)
-  alg (L (PutStatus status k))    = k  << WaiHandlerC (put status)
-  alg (L (TellChunk chunk k))     = k  << WaiHandlerC (ByteStream.tellChunk chunk)
+  alg (L (TellHeaders headers k)) = k  <* WaiHandlerC (tell headers)
+  alg (L (PutStatus status k))    = k  <* WaiHandlerC (put status)
+  alg (L (TellChunk chunk k))     = k  <* WaiHandlerC (ByteStream.tellChunk chunk)
   alg (R other)                   = WaiHandlerC (alg (R (R (R (handleCoercible other)))))
   {-# INLINE alg #-}
 

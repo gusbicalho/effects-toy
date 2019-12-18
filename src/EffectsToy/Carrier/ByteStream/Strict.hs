@@ -16,13 +16,10 @@ newtype ByteStreamC m a = ByteStreamC {
   runByteStreamC :: WriterC LBS.ByteString m a
   } deriving newtype (Functor, Applicative, Monad)
 
-(<<) :: Monad m => m a -> m b -> m a
-(<<) = flip (>>)
-
 instance ( Algebra sig m
          , Effect sig
          ) => Algebra (ByteStream :+: sig) (ByteStreamC m) where
-  alg (L (TellChunk chunk k))     = k << ByteStreamC (tell chunk)
+  alg (L (TellChunk chunk k))     = k <* ByteStreamC (tell chunk)
   alg (R other)                   = ByteStreamC (alg (R (handleCoercible other)))
   {-# INLINE alg #-}
 
