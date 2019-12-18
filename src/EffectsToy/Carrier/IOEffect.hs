@@ -12,13 +12,16 @@ import           EffectsToy.Effect.IOEffect
 import           Control.Monad.IO.Class
 
 newtype IOEffectC m a = IOEffectC {
-  runIOEffect :: m a
+  runIOEffectC :: m a
   } deriving newtype (Functor, Applicative, Monad)
 
 instance ( Algebra sig m
          , Effect sig
          , MonadIO m
          ) => Algebra (IOEffect :+: sig) (IOEffectC m) where
-  alg (L (RunIO ioAction k)) = k <* IOEffectC (liftIO ioAction)
-  alg (R other)              = IOEffectC (alg (handleCoercible other))
+  alg (L (SendIO ioAction k)) = k =<< IOEffectC (liftIO ioAction)
+  alg (R other)               = IOEffectC (alg (handleCoercible other))
   {-# INLINE alg #-}
+
+runIOEffect :: _ a -> m a
+runIOEffect = runIOEffectC

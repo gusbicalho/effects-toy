@@ -44,8 +44,8 @@ helloWorld :: ( Has WaiHandler sig m
               , Has IOEffect sig m
               ) => m ()
 helloWorld = do
+  sendIO $ putStrLn "Request received"
   req <- askRequest
-  runIO $ putStrLn "here"
   tellHeaders [(HTTP.hContentType, "text/plain")]
   tellChunk "Hello, world!\n"
   tellChunk $ "You requested " <> LBS.fromStrict (Wai.rawQueryString req)
