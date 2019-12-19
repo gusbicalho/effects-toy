@@ -57,7 +57,7 @@ packages:
     hackage: streaming-bytestring-0.1.6@sha256:5518d9480b703d2ecf9bbb0d4c76d63053daa99eb08589af4225be72eaf4b36e,12850
 snapshots:
 - completed:
-    size: 435321
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2019/12/6.yaml
-    sha256: 16518e385fe215d14ad34c3665493b172812e1b39aa695c8c4ea81fe2aa4b6bb
-  original: nightly-2019-12-06
+    size: 437735
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2019/12/13.yaml
+    sha256: e1e5225bc34979e22fb2609389aba3cc1984a2992ff401789e191df81788f2fd
+  original: nightly-2019-12-13
