@@ -2,13 +2,13 @@
 {-# LANGUAGE PartialTypeSignatures #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-partial-type-signatures #-}
-module EffectsToy.Carrier.IOEffect
+module FusedEffects.EffectsToy.Carrier.IOEffect
   ( IOEffectC, runIOEffect
-  , module EffectsToy.Effect.IOEffect
+  , module FusedEffects.EffectsToy.Effect.IOEffect
   ) where
 
 import           Control.Algebra
-import           EffectsToy.Effect.IOEffect
+import           FusedEffects.EffectsToy.Effect.IOEffect
 import           Control.Monad.IO.Class
 
 newtype IOEffectC m a = IOEffectC {

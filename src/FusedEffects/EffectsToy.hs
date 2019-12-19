@@ -1,6 +1,6 @@
 {-# LANGUAGE PartialTypeSignatures #-}
 {-# OPTIONS_GHC -Wno-partial-type-signatures #-}
-module EffectsToy
+module FusedEffects.EffectsToy
   ( start, start2
   ) where
 
@@ -8,11 +8,11 @@ import qualified Network.Wai as Wai
 import qualified Network.HTTP.Types as HTTP
 import qualified Network.Wai.Handler.Warp as Warp
 import           Control.Carrier.Lift
-import           EffectsToy.Carrier.IOEffect
-import           EffectsToy.Carrier.WaiHandler
-import qualified EffectsToy.Carrier.ByteStream.Strict as BSStrict
-import qualified EffectsToy.Carrier.ByteStream.Streaming as BSStreaming
-import           EffectsToy.Carrier.ByteStream.Streaming ( Of(..) )
+import           FusedEffects.EffectsToy.Carrier.IOEffect
+import           FusedEffects.EffectsToy.Carrier.WaiHandler
+import qualified FusedEffects.EffectsToy.Carrier.ByteStream.Strict as BSStrict
+import qualified FusedEffects.EffectsToy.Carrier.ByteStream.Streaming as BSStreaming
+import           FusedEffects.EffectsToy.Carrier.ByteStream.Streaming ( Of(..) )
 import qualified Data.ByteString.Lazy as LBS
 
 start :: IO ()

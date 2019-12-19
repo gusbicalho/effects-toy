@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveAnyClass #-}
-module EffectsToy.Effect.IOEffect
+module FusedEffects.EffectsToy.Effect.IOEffect
   ( IOEffect (..)
   , sendIO
   -- * Re-exports

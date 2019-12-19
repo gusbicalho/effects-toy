@@ -1,6 +1,6 @@
 module Main where
 
-import qualified EffectsToy
+import qualified FusedEffects.EffectsToy
 
 main :: IO ()
-main = EffectsToy.start
+main = FusedEffects.EffectsToy.start
