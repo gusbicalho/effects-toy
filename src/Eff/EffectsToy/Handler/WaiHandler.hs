@@ -1,5 +1,5 @@
 module Eff.EffectsToy.Handler.WaiHandler
-  ( runWaiHandlerByteStream
+  ( runWaiHandler
   , module Eff.EffectsToy.Effect.WaiHandler
   ) where
 
@@ -11,7 +11,6 @@ import qualified Network.Wai as Wai
 import qualified Network.HTTP.Types as HTTP
 import qualified Eff.EffectsToy.Effect.ByteStream as ByteStream
 import Eff.EffectsToy.Effect.WaiHandler
-import qualified Data.ByteString.Lazy as LBS
 
 data WaiHandlerByteStream
 type WaiHandlerByteStreamT = HandlerT WaiHandlerByteStream '[ ReaderT Wai.Request
@@ -26,8 +25,8 @@ instance (Monad m, ByteStream.ByteStream m) => WaiHandler (WaiHandlerByteStreamT
   putStatus status    = HandlerT $ put status
   tellChunk chunk     = HandlerT $ ByteStream.tellChunk chunk
 
-runWaiHandlerByteStream :: Monad m => Wai.Request -> EffT WaiHandlerByteStreamT m () -> m (HTTP.ResponseHeaders, HTTP.Status)
-runWaiHandlerByteStream request waiApp = do
+runWaiHandler :: Monad m => Wai.Request -> EffT WaiHandlerByteStreamT m () -> m (HTTP.ResponseHeaders, HTTP.Status)
+runWaiHandler request waiApp = do
   (headers, (status, ())) <- runWriter @HTTP.ResponseHeaders
                            . runState HTTP.status500
                            . runReader request

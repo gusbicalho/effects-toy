@@ -1,5 +1,5 @@
 module Eff.EffectsToy.Handler.ByteStream.Strict
-  ( runByteStreamStrict
+  ( runByteStream
   , module Eff.EffectsToy.Effect.ByteStream
   ) where
 
@@ -15,5 +15,5 @@ type instance Handles ByteStreamStrictT eff = eff == ByteStream
 instance Monad m => ByteStream (ByteStreamStrictT m) where
   tellChunk chunk = HandlerT $ tell chunk
 
-runByteStreamStrict :: Functor m => EffT ByteStreamStrictT m a -> m (LBS.ByteString, a)
-runByteStreamStrict = runWriter @LBS.ByteString . runHandlerT . runEffT
+runByteStream :: Functor m => EffT ByteStreamStrictT m a -> m (LBS.ByteString, a)
+runByteStream = runWriter @LBS.ByteString . runHandlerT . runEffT
