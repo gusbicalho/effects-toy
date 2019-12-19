@@ -2,15 +2,15 @@
 {-# LANGUAGE PartialTypeSignatures #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-partial-type-signatures #-}
-module EffectsToy.Carrier.ByteStream.Strict
+module FusedEffects.EffectsToy.Carrier.ByteStream.Strict
   ( ByteStreamC, runByteStream
-  , module EffectsToy.Effect.ByteStream
+  , module FusedEffects.EffectsToy.Effect.ByteStream
   ) where
 
 import           Control.Algebra
 import           Control.Carrier.Writer.Strict
 import qualified Data.ByteString.Lazy as LBS
-import           EffectsToy.Effect.ByteStream
+import           FusedEffects.EffectsToy.Effect.ByteStream
 
 newtype ByteStreamC m a = ByteStreamC {
   runByteStreamC :: WriterC LBS.ByteString m a

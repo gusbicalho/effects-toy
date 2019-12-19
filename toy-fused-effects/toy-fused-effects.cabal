@@ -1,0 +1,114 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 385f91c8e8d10c3b98b9fe9e37ab47653e2f38ec7f18a2b38e4274aa4f0e5a19
+
+name:           toy-fused-effects
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/effects-toy#readme>
+homepage:       https://github.com/githubuser/effects-toy#readme
+bug-reports:    https://github.com/githubuser/effects-toy/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2019 Author name here
+license:        BSD3
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/effects-toy
+
+library
+  exposed-modules:
+      FusedEffects.EffectsToy
+      FusedEffects.EffectsToy.Carrier.ByteStream.Streaming
+      FusedEffects.EffectsToy.Carrier.ByteStream.Strict
+      FusedEffects.EffectsToy.Carrier.IOEffect
+      FusedEffects.EffectsToy.Carrier.WaiHandler
+      FusedEffects.EffectsToy.Effect.ByteStream
+      FusedEffects.EffectsToy.Effect.IOEffect
+      FusedEffects.EffectsToy.Effect.WaiHandler
+  other-modules:
+      Paths_toy_fused_effects
+  hs-source-dirs:
+      src
+  default-extensions: ApplicativeDo BangPatterns ConstraintKinds DataKinds DefaultSignatures DeriveFoldable DeriveFunctor DeriveGeneric DeriveLift DeriveTraversable DerivingStrategies EmptyCase ExistentialQuantification FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving InstanceSigs KindSignatures LambdaCase MultiParamTypeClasses MultiWayIf NamedFieldPuns OverloadedLabels OverloadedStrings PatternSynonyms RankNTypes ScopedTypeVariables StandaloneDeriving TupleSections TypeApplications TypeFamilies TypeFamilyDependencies TypeOperators ViewPatterns
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -foptimal-applicative-do
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , fused-effects
+    , http-types
+    , mtl
+    , sqlite-simple
+    , streaming
+    , streaming-bytestring
+    , text
+    , time
+    , wai
+    , wai-logger
+    , warp
+  default-language: Haskell2010
+
+executable toy-fused-effects-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_toy_fused_effects
+  hs-source-dirs:
+      app
+  default-extensions: ApplicativeDo BangPatterns ConstraintKinds DataKinds DefaultSignatures DeriveFoldable DeriveFunctor DeriveGeneric DeriveLift DeriveTraversable DerivingStrategies EmptyCase ExistentialQuantification FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving InstanceSigs KindSignatures LambdaCase MultiParamTypeClasses MultiWayIf NamedFieldPuns OverloadedLabels OverloadedStrings PatternSynonyms RankNTypes ScopedTypeVariables StandaloneDeriving TupleSections TypeApplications TypeFamilies TypeFamilyDependencies TypeOperators ViewPatterns
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -foptimal-applicative-do -O2 -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , fused-effects
+    , http-types
+    , mtl
+    , sqlite-simple
+    , streaming
+    , streaming-bytestring
+    , text
+    , time
+    , toy-fused-effects
+    , wai
+    , wai-logger
+    , warp
+  default-language: Haskell2010
+
+test-suite toy-fused-effects-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_toy_fused_effects
+  hs-source-dirs:
+      test
+  default-extensions: ApplicativeDo BangPatterns ConstraintKinds DataKinds DefaultSignatures DeriveFoldable DeriveFunctor DeriveGeneric DeriveLift DeriveTraversable DerivingStrategies EmptyCase ExistentialQuantification FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving InstanceSigs KindSignatures LambdaCase MultiParamTypeClasses MultiWayIf NamedFieldPuns OverloadedLabels OverloadedStrings PatternSynonyms RankNTypes ScopedTypeVariables StandaloneDeriving TupleSections TypeApplications TypeFamilies TypeFamilyDependencies TypeOperators ViewPatterns
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints -foptimal-applicative-do -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , aeson
+    , base
+    , bytestring
+    , fused-effects
+    , hspec
+    , hspec-wai
+    , http-types
+    , mtl
+    , sqlite-simple
+    , streaming
+    , streaming-bytestring
+    , text
+    , time
+    , toy-fused-effects
+    , wai
+    , wai-logger
+    , warp
+  default-language: Haskell2010

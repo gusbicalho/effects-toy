@@ -19,6 +19,22 @@ packages:
     git: git@github.com:mvoidex/sqlite-simple.git
     commit: cc94f6e303b19aeaed2ac21cbccf6f5c7b74274d
 - completed:
+    subdir: eff
+    cabal-file:
+      size: 1887
+      sha256: f6194ef5712755fa1c6ad2818d391d9290f10c172164c5f826383335e6dae6e8
+    name: eff
+    version: 0.0.0.0
+    git: git@github.com:hasura/eff.git
+    pantry-tree:
+      size: 1010
+      sha256: f31b84eabd05f026e08c4b985245afac221c67a56863fb5bbbd51279f27a67a0
+    commit: 61dfb24515b3d6f54f2ca148655bd7c6b7e8181c
+  original:
+    subdir: eff
+    git: git@github.com:hasura/eff.git
+    commit: 61dfb24515b3d6f54f2ca148655bd7c6b7e8181c
+- completed:
     hackage: direct-sqlite-2.3.24@sha256:869bcfd5e9cf1f8b76af3cb6709969298eca3a7b376a847158110b3c083cd431,3760
     pantry-tree:
       size: 770

@@ -2,15 +2,15 @@
 {-# LANGUAGE PartialTypeSignatures #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-partial-type-signatures #-}
-module EffectsToy.Carrier.ByteStream.Streaming
+module FusedEffects.EffectsToy.Carrier.ByteStream.Streaming
   ( ByteStreamC, runByteStream
-  , module EffectsToy.Effect.ByteStream
+  , module FusedEffects.EffectsToy.Effect.ByteStream
   , Streaming.toLazy, Of (..)
   ) where
 
 import           Control.Algebra
 import           Control.Effect.Lift
-import           EffectsToy.Effect.ByteStream
+import           FusedEffects.EffectsToy.Effect.ByteStream
 import qualified Data.ByteString.Streaming as Streaming
 import           Data.Functor.Of ( Of (..) )
 

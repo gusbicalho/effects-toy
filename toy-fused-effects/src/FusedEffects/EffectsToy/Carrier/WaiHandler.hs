@@ -2,10 +2,10 @@
 {-# LANGUAGE PartialTypeSignatures #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# OPTIONS_GHC -Wno-partial-type-signatures #-}
-module EffectsToy.Carrier.WaiHandler
+module FusedEffects.EffectsToy.Carrier.WaiHandler
   ( WaiHandlerC
   , runWaiHandler
-  , module EffectsToy.Effect.WaiHandler
+  , module FusedEffects.EffectsToy.Effect.WaiHandler
   ) where
 
 import           Control.Algebra
@@ -15,8 +15,8 @@ import qualified Network.HTTP.Types as HTTP
 import           Control.Carrier.Reader
 import           Control.Carrier.State.Strict
 import           Control.Carrier.Writer.Strict
-import           EffectsToy.Effect.WaiHandler
-import qualified EffectsToy.Effect.ByteStream as ByteStream
+import           FusedEffects.EffectsToy.Effect.WaiHandler
+import qualified FusedEffects.EffectsToy.Effect.ByteStream as ByteStream
 
 newtype WaiHandlerC m a = WaiHandlerC {
   runWaiHandlerC :: StateC

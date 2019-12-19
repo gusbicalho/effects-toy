@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveAnyClass #-}
-module EffectsToy.Effect.ByteStream
+module FusedEffects.EffectsToy.Effect.ByteStream
   ( ByteStream (..)
   , tellChunk
   -- * Re-exports

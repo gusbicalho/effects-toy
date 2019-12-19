@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveAnyClass #-}
-module EffectsToy.Effect.WaiHandler
+module FusedEffects.EffectsToy.Effect.WaiHandler
   ( WaiHandler (..)
   , askRequest, tellHeaders, putStatus, tellChunk
   -- * Re-exports

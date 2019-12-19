@@ -29,7 +29,8 @@ resolver: nightly-2019-12-06
 #   - auto-update
 #   - wai
 packages:
-- .
+- toy-eff
+- toy-fused-effects
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
@@ -42,6 +43,10 @@ packages:
 extra-deps:
 - git: git@github.com:mvoidex/sqlite-simple.git
   commit: cc94f6e303b19aeaed2ac21cbccf6f5c7b74274d
+- git: git@github.com:hasura/eff.git
+  commit: 61dfb24515b3d6f54f2ca148655bd7c6b7e8181c
+  subdirs:
+  - eff
 - direct-sqlite-2.3.24@sha256:869bcfd5e9cf1f8b76af3cb6709969298eca3a7b376a847158110b3c083cd431,3760
 - semigroups-0.18.5@sha256:41ef9f5f183f66c519c5cddcb3fbfdbc9b67a2b7bfae7d81f91de9ff7367d8c6,5828
 - streaming-bytestring-0.1.6@sha256:5518d9480b703d2ecf9bbb0d4c76d63053daa99eb08589af4225be72eaf4b36e,12850

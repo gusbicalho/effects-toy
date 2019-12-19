@@ -1,2 +1,3 @@
 #! /usr/bin/env bash
-stack ghci effects-toy:lib effects-toy:effects-toy-test
+PACKAGE="$1"
+stack ghci "$PACKAGE:lib" "$PACKAGE:$PACKAGE-test"

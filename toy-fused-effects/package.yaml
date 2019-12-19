@@ -1,4 +1,4 @@
-name:                effects-toy
+name:                toy-fused-effects
 version:             0.1.0.0
 github:              "githubuser/effects-toy"
 license:             BSD3
@@ -85,7 +85,7 @@ library:
   source-dirs: src
 
 executables:
-  effects-toy-exe:
+  toy-fused-effects-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -94,10 +94,10 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - effects-toy
+    - toy-fused-effects
 
 tests:
-  effects-toy-test:
+  toy-fused-effects-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -105,7 +105,7 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - effects-toy
+    - toy-fused-effects
     - base
     - hspec
     - hspec-wai
