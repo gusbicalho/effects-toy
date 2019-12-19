@@ -6,18 +6,18 @@
 packages:
 - completed:
     cabal-file:
-      size: 2938
-      sha256: b62e27f6d6e9299f46be99bca47442e8aef04ab98b201cd568c3c04c6831202b
+      size: 2930
+      sha256: ef650f85c22d5695213591d1614a22dbb9380c08e73da9834004d3faedca0cb5
     name: sqlite-simple
-    version: 0.4.16.0
-    git: git@github.com:mvoidex/sqlite-simple.git
+    version: 0.4.16.1
+    git: git@github.com:plcplc/sqlite-simple.git
     pantry-tree:
-      size: 1995
-      sha256: 68fbe4f81c18a799f6c3aaee66eafc35a66dc8209cba3243d112832b678b44a4
-    commit: cc94f6e303b19aeaed2ac21cbccf6f5c7b74274d
+      size: 2039
+      sha256: d9504ee76e32001bcd8350f78e50a52a6f450635cbb20affcf7f0589c7c719ce
+    commit: 367885bfd1a3366d43c2fe514c2c1a6b208ef887
   original:
-    git: git@github.com:mvoidex/sqlite-simple.git
-    commit: cc94f6e303b19aeaed2ac21cbccf6f5c7b74274d
+    git: git@github.com:plcplc/sqlite-simple.git
+    commit: 367885bfd1a3366d43c2fe514c2c1a6b208ef887
 - completed:
     subdir: eff
     cabal-file:

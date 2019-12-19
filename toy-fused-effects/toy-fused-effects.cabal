@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 385f91c8e8d10c3b98b9fe9e37ab47653e2f38ec7f18a2b38e4274aa4f0e5a19
+-- hash: d574040b39bf05ec48bf896dea9dc9c6a051104ed19f26ab7c280f22600b4f38
 
 name:           toy-fused-effects
 version:        0.1.0.0
@@ -16,9 +16,6 @@ maintainer:     example@example.com
 copyright:      2019 Author name here
 license:        BSD3
 build-type:     Simple
-extra-source-files:
-    README.md
-    ChangeLog.md
 
 source-repository head
   type: git

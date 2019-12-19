@@ -41,8 +41,8 @@ packages:
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
 extra-deps:
-- git: git@github.com:mvoidex/sqlite-simple.git
-  commit: cc94f6e303b19aeaed2ac21cbccf6f5c7b74274d
+- git: git@github.com:plcplc/sqlite-simple.git
+  commit: 367885bfd1a3366d43c2fe514c2c1a6b208ef887
 - git: git@github.com:hasura/eff.git
   commit: 61dfb24515b3d6f54f2ca148655bd7c6b7e8181c
   subdirs:
