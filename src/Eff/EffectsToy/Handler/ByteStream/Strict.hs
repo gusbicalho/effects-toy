@@ -17,6 +17,3 @@ instance Monad m => ByteStream (ByteStreamStrictT m) where
 
 runByteStreamStrict :: Functor m => EffT ByteStreamStrictT m a -> m (LBS.ByteString, a)
 runByteStreamStrict = runWriter @LBS.ByteString . runHandlerT . runEffT
-
--- runIOEffect :: EffT IOEffectT m a -> m a
--- runIOEffect = runHandlerT . runEffT
