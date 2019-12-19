@@ -9,13 +9,19 @@ import qualified Network.HTTP.Types as HTTP
 import qualified Network.Wai.Handler.Warp as Warp
 import qualified Data.ByteString.Lazy as LBS
 import Eff.EffectsToy.Handler.IOEffect
+import Eff.EffectsToy.Handler.ByteStream.Strict
 
 start :: IO ()
-start = runIOEffect $ helloWorld
+start = do
+  (w, ()) <- runIOEffect . runByteStreamStrict $ helloWorld
+  LBS.putStrLn w
+  return ()
 
-helloWorld :: _ ()
+helloWorld :: (ByteStream m, IOEffect m) => m ()
 helloWorld = do
+  tellChunk "effects!"
   sendIO (putStrLn "hello world!")
+  tellChunk "more effects!"
 -- import           Control.Carrier.Lift
 -- import           FusedEffects.EffectsToy.Carrier.IOEffect
 -- import           FusedEffects.EffectsToy.Carrier.WaiHandler
