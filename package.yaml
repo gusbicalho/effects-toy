@@ -69,7 +69,7 @@ dependencies:
 - aeson
 - base >= 4.7 && < 5
 - bytestring
-- fused-effects
+- eff
 - http-types
 - mtl
 - sqlite-simple
