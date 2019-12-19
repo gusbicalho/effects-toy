@@ -71,6 +71,7 @@ dependencies:
 - bytestring
 - eff
 - http-types
+- monad-control
 - mtl
 - sqlite-simple
 - streaming
