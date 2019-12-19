@@ -8,9 +8,14 @@ import qualified Network.Wai as Wai
 import qualified Network.HTTP.Types as HTTP
 import qualified Network.Wai.Handler.Warp as Warp
 import qualified Data.ByteString.Lazy as LBS
+import Eff.EffectsToy.Handler.IOEffect
 
 start :: IO ()
-start = return ()
+start = runIOEffect $ helloWorld
+
+helloWorld :: _ ()
+helloWorld = do
+  sendIO (putStrLn "hello world!")
 -- import           Control.Carrier.Lift
 -- import           FusedEffects.EffectsToy.Carrier.IOEffect
 -- import           FusedEffects.EffectsToy.Carrier.WaiHandler
