@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c57644da0d909b199e416017da9178997d39e93bf27af9be7e75aa9337102098
+-- hash: 008ffcb0f840ba9f56e603f3539d9344399c8f826ed47d406f28df2a12d49033
 
 name:           toy-fused-effects
 version:        0.1.0.0
@@ -26,11 +26,9 @@ library
       FusedEffects.EffectsToy
       FusedEffects.EffectsToy.Carrier.ByteStream.Streaming
       FusedEffects.EffectsToy.Carrier.ByteStream.Strict
-      FusedEffects.EffectsToy.Carrier.IOEffect
       FusedEffects.EffectsToy.Carrier.SQLiteSimple
       FusedEffects.EffectsToy.Carrier.WaiHandler
       FusedEffects.EffectsToy.Effect.ByteStream
-      FusedEffects.EffectsToy.Effect.IOEffect
       FusedEffects.EffectsToy.Effect.SQLiteSimple
       FusedEffects.EffectsToy.Effect.WaiHandler
   other-modules:

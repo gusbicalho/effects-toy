@@ -1,52 +1,75 @@
 {-# LANGUAGE PartialTypeSignatures #-}
 {-# OPTIONS_GHC -Wno-partial-type-signatures #-}
 module FusedEffects.EffectsToy
-  ( start, start2
+  ( start
   ) where
 
 import qualified Network.Wai as Wai
 import qualified Network.HTTP.Types as HTTP
 import qualified Network.Wai.Handler.Warp as Warp
 import           Control.Carrier.Lift
-import           FusedEffects.EffectsToy.Carrier.IOEffect
 import           FusedEffects.EffectsToy.Carrier.WaiHandler
 import qualified FusedEffects.EffectsToy.Carrier.ByteStream.Strict as BSStrict
-import qualified FusedEffects.EffectsToy.Carrier.ByteStream.Streaming as BSStreaming
-import           FusedEffects.EffectsToy.Carrier.ByteStream.Streaming ( Of(..) )
+import           FusedEffects.EffectsToy.Carrier.SQLiteSimple
 import qualified Data.ByteString.Lazy as LBS
+import           Data.Function
+import           Data.Int
+import           Data.String (fromString)
 
 start :: IO ()
-start = Warp.run 8087 (runWaiApplication helloWorld)
+start = do
+    runBaseStack initApp
+    Warp.run 8087 (runWaiApplication runBaseStack helloWorld)
+  where
+    runBaseStack :: SQLiteSimpleC (LiftC IO) a -> IO a 
+    runBaseStack m = m & withConnection "/tmp/tempdb.db"
+                       & runM @IO
+    initApp = initDB
 
-runWaiApplication :: WaiHandlerC _ () -> Wai.Application
-runWaiApplication waiApp request respond = do
-  (body, (headers, status)) <- runM
-                               . runIOEffect
+runWaiApplication :: ( Monad m
+                     , Monad n
+                     ) => (forall x. n x -> m x)
+                       -> WaiHandlerC _ ()
+                       -> Wai.Request
+                       -> (Wai.Response -> m b)
+                       -> m b
+runWaiApplication runBaseStack waiApp request respond = do
+  (body, (headers, status)) <- runBaseStack
                                . BSStrict.runByteStream
                                . runWaiHandler request
                                $ waiApp
   respond $ Wai.responseLBS status headers body
 
-start2 :: IO ()
-start2 = Warp.run 8087 (runWaiApplication2 helloWorld)
-
-runWaiApplication2 :: WaiHandlerC _ () -> Wai.Application
-runWaiApplication2 waiApp request respond = do
-  (body :> (headers, status)) <- BSStreaming.toLazy
-                               . runM
-                               . runIOEffect
-                               . BSStreaming.runByteStream
-                               . runWaiHandler request
-                               $ waiApp
-  respond $ Wai.responseLBS status headers body
+initDB :: ( Has SQLiteSimple sig m
+          ) => m ()
+initDB = execute_ $ "CREATE TABLE IF NOT EXISTS test "
+                 <> "( id integer not null primary key"
+                 <> ", query_params text"
+                 <> ")"
 
 helloWorld :: ( Has WaiHandler sig m
-              , Has IOEffect sig m
+              , Has (Lift IO) sig m
+              , Has SQLiteSimple sig m
               ) => m ()
 helloWorld = do
-  sendIO $ putStrLn "Request received"
+  sendM $ putStrLn "Request received"
   req <- askRequest
   tellHeaders [(HTTP.hContentType, "text/plain")]
   tellChunk "Hello, world!\n"
-  tellChunk $ "You requested " <> LBS.fromStrict (Wai.rawQueryString req)
+  (reqId, str) <- req & Wai.rawQueryString 
+                      & LBS.fromStrict
+                      & storeAndLookup
+  tellChunk $ "You requested " <> str <> "\n"
+  tellChunk $ "Your request was number " <> (fromString $ show reqId)
   putStatus HTTP.ok200
+
+storeAndLookup :: ( Has (Lift IO) sig m
+                  , Has SQLiteSimple sig m
+                  ) => LBS.ByteString -> m (Int64, LBS.ByteString)
+storeAndLookup queryString = withTransaction $ do
+  execute "INSERT INTO test (query_params) values (?)" [queryString]
+  reqId <- lastInsertRowId
+  rows <- query "SELECT query_params FROM test WHERE id = ?" [reqId]
+  case rows of
+    []         -> return (reqId, "")
+    (Only s:_) -> return (reqId, s)

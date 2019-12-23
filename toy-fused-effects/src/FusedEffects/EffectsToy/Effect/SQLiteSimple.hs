@@ -1,9 +1,11 @@
 {-# LANGUAGE DeriveAnyClass #-}
 module FusedEffects.EffectsToy.Effect.SQLiteSimple
   ( SQLiteSimple (..)
-  , withTransaction, query, execute
+  , withTransaction, query, execute, execute_, lastInsertRowId
   , SQLiteDB, sqliteDB
   -- * Re-exports
+  , SQLite.Only (..)
+  , SQLite.FromRow (..), FromField (..), SQLite.ToRow (..), ToField (..)
   , Algebra
   , Has
   , run
@@ -11,7 +13,10 @@ module FusedEffects.EffectsToy.Effect.SQLiteSimple
 
 import           Control.Algebra
 import           Data.Functor
+import           Data.Int
 import qualified Database.SQLite.Simple as SQLite
+import           Database.SQLite.Simple.FromField
+import           Database.SQLite.Simple.ToField
 import qualified Control.Effect.Exception as Exc
 
 newtype SQLiteDB = SQLiteDB FilePath
@@ -24,18 +29,22 @@ data SQLiteSimple m k where
              ) => SQLite.Query -> q -> ([r] -> m k) -> SQLiteSimple m k
   Execute :: ( SQLite.ToRow q
              ) => SQLite.Query -> q -> m k -> SQLiteSimple m k
+  LastInsertRowId :: (Int64 -> m k) -> SQLiteSimple m k
 
 instance Functor m => Functor (SQLiteSimple m) where
   fmap f (Query   q params kont) = Query   q params (fmap f . kont)
   fmap f (Execute q params kont) = Execute q params (fmap f kont)
+  fmap f (LastInsertRowId  kont) = LastInsertRowId  (fmap f . kont)
 
 instance HFunctor SQLiteSimple where
   hmap nt (Query   q params kont) = Query   q params (nt . kont)
   hmap nt (Execute q params kont) = Execute q params (nt kont)
+  hmap nt (LastInsertRowId  kont) = LastInsertRowId  (nt . kont)
 
 instance Effect SQLiteSimple where
   thread ctx handle (Query   q params kont) = Query   q params (\a -> handle (ctx $> kont a))
   thread ctx handle (Execute q params kont) = Execute q params (handle (ctx $> kont))
+  thread ctx handle (LastInsertRowId  kont) = LastInsertRowId  (\a -> handle (ctx $> kont a))
 
 query :: ( Has SQLiteSimple sig m
          , SQLite.ToRow q
@@ -51,6 +60,10 @@ execute q params = send $ Execute q params (pure ())
 execute_ :: ( Has SQLiteSimple sig m
            ) => SQLite.Query -> m ()
 execute_ q = execute q ()
+
+lastInsertRowId :: ( Has SQLiteSimple sig m
+                   ) => m Int64
+lastInsertRowId = send $ LastInsertRowId pure
 
 withTransaction :: ( Has (Exc.Lift IO) sig m
                    , Has SQLiteSimple sig m
