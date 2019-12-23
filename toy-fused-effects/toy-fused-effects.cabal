@@ -27,9 +27,11 @@ library
       FusedEffects.EffectsToy.Carrier.ByteStream.Streaming
       FusedEffects.EffectsToy.Carrier.ByteStream.Strict
       FusedEffects.EffectsToy.Carrier.IOEffect
+      FusedEffects.EffectsToy.Carrier.SQLiteSimple
       FusedEffects.EffectsToy.Carrier.WaiHandler
       FusedEffects.EffectsToy.Effect.ByteStream
       FusedEffects.EffectsToy.Effect.IOEffect
+      FusedEffects.EffectsToy.Effect.SQLiteSimple
       FusedEffects.EffectsToy.Effect.WaiHandler
   other-modules:
       Paths_toy_fused_effects
