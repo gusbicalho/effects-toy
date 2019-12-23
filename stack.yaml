@@ -17,7 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: nightly-2019-12-13
+resolver: nightly-2019-12-22
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -50,6 +50,7 @@ extra-deps:
 - direct-sqlite-2.3.24@sha256:869bcfd5e9cf1f8b76af3cb6709969298eca3a7b376a847158110b3c083cd431,3760
 - semigroups-0.18.5@sha256:41ef9f5f183f66c519c5cddcb3fbfdbc9b67a2b7bfae7d81f91de9ff7367d8c6,5828
 - streaming-bytestring-0.1.6@sha256:5518d9480b703d2ecf9bbb0d4c76d63053daa99eb08589af4225be72eaf4b36e,12850
+- fused-effects-exceptions-1.0.0.0@sha256:ee32e6e6a40ce2272603b93036e05945d79f68200b1f09624db39262724b0f98,1731
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

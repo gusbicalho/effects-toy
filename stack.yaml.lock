@@ -55,9 +55,16 @@ packages:
       sha256: 7bd150e35e3c412ab9655ce42a8bca154ee8779d1f9f4ba01310b429e651e770
   original:
     hackage: streaming-bytestring-0.1.6@sha256:5518d9480b703d2ecf9bbb0d4c76d63053daa99eb08589af4225be72eaf4b36e,12850
+- completed:
+    hackage: fused-effects-exceptions-1.0.0.0@sha256:ee32e6e6a40ce2272603b93036e05945d79f68200b1f09624db39262724b0f98,1731
+    pantry-tree:
+      size: 520
+      sha256: de5cf7211020a5cb543faed316b760c8b9be7412d716b483f2ce8e152e63d278
+  original:
+    hackage: fused-effects-exceptions-1.0.0.0@sha256:ee32e6e6a40ce2272603b93036e05945d79f68200b1f09624db39262724b0f98,1731
 snapshots:
 - completed:
-    size: 437735
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2019/12/13.yaml
-    sha256: e1e5225bc34979e22fb2609389aba3cc1984a2992ff401789e191df81788f2fd
-  original: nightly-2019-12-13
+    size: 439010
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2019/12/22.yaml
+    sha256: 821da68dfc5803072ad7c2b23229ec90acf91c64cec75584a7c3b68d45274d65
+  original: nightly-2019-12-22

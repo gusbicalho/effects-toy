@@ -66,6 +66,7 @@ dependencies:
 - base >= 4.7 && < 5
 - bytestring
 - fused-effects
+- fused-effects-exceptions
 - http-types
 - mtl
 - sqlite-simple

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d574040b39bf05ec48bf896dea9dc9c6a051104ed19f26ab7c280f22600b4f38
+-- hash: c57644da0d909b199e416017da9178997d39e93bf27af9be7e75aa9337102098
 
 name:           toy-fused-effects
 version:        0.1.0.0
@@ -42,6 +42,7 @@ library
     , base >=4.7 && <5
     , bytestring
     , fused-effects
+    , fused-effects-exceptions
     , http-types
     , mtl
     , sqlite-simple
@@ -67,6 +68,7 @@ executable toy-fused-effects-exe
     , base >=4.7 && <5
     , bytestring
     , fused-effects
+    , fused-effects-exceptions
     , http-types
     , mtl
     , sqlite-simple
@@ -95,6 +97,7 @@ test-suite toy-fused-effects-test
     , base
     , bytestring
     , fused-effects
+    , fused-effects-exceptions
     , hspec
     , hspec-wai
     , http-types
