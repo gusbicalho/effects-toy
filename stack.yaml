@@ -29,7 +29,7 @@ resolver: nightly-2019-12-13
 #   - auto-update
 #   - wai
 packages:
-- toy-eff
+# - toy-eff # while we're working with fused-effects
 - toy-fused-effects
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
