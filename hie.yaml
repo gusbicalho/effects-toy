@@ -1,0 +1,2 @@
+cradle: {stack: {component: "toy-fused-effects:toy-fused-effects-test" }}
+# cradle: {stack: {component: "toy-eff:toy-eff-test" }}
