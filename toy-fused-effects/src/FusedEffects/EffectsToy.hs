@@ -34,13 +34,13 @@ runWaiApplication :: ( Monad n
                      ) => (forall x. n x -> IO x)
                        -> _ ()
                        -> Wai.Application
-runWaiApplication runToIO waiApp request respond = do
-    response <- (fmap toResponse)
-                . runToIO
-                . BSStrict.runByteStream
-                . runWaiHandler request
-                $ waiApp
-    respond response
+runWaiApplication runToIO waiApp request respond =
+    waiApp
+    & runWaiHandler request
+    & BSStrict.runByteStream
+    & runToIO
+    & (fmap toResponse)
+    & (>>= respond)
   where
     toResponse (body, (headers, status)) = Wai.responseLBS status headers body
 

@@ -17,17 +17,30 @@ import           Eff.EffectsToy.Handler.SQLiteSimple
 import           Eff.EffectsToy.Handler.Db.TestDb.SQLite
 
 start :: IO ()
-start = Warp.run 8087 (runWaiApplication helloWorld)
+start = do
+    runBaseStack initApp
+    Warp.run 8087 (runWaiApplication runBaseStack helloWorld)
+  where
+    initApp = initDb
 
-runWaiApplication :: _ () -> Wai.Application
-runWaiApplication waiApp request respond = do
-  (body, (headers, status)) <- runTrace
-                               . withConnection "/tmp/tempdb.db"
-                               . runTestDb
-                               . BSStrict.runByteStream
-                               . runWaiHandler request
-                               $ waiApp
-  respond $ Wai.responseLBS status headers body
+runBaseStack :: _ a -> IO a
+runBaseStack = runTrace
+             . withConnection "/tmp/tempdb.db"
+             . runTestDb
+
+runWaiApplication :: ( Monad n
+                     ) => (forall x. n x -> IO x)
+                       -> _ ()
+                       -> Wai.Application
+runWaiApplication runToIO waiApp request respond =
+    waiApp
+    & runWaiHandler request
+    & BSStrict.runByteStream
+    & runToIO
+    & (fmap toResponse)
+    & (>>= respond)
+  where
+    toResponse (body, (headers, status)) = Wai.responseLBS status headers body
 
 helloWorld :: ( Trace m
               , WaiHandler m
