@@ -1,27 +1,15 @@
-{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE TemplateHaskell #-}
 module Polysemy.EffectsToy.Effect.Db.TestDb
-  (
+  ( TestDb (..)
+  , initDb, storeAndLookup
   ) where
---   ( TestDb (..)
---   , initDb, storeAndLookup
---   -- * Re-exports
---   , Algebra
---   , Has
---   , run
---   ) where
 
--- import           GHC.Generics (Generic1)
--- import           Control.Algebra
--- import qualified Data.ByteString.Lazy as LBS
--- import           Data.Int
+import qualified Data.ByteString.Lazy as LBS
+import           Data.Int
+import           Polysemy
 
--- data TestDb m k
---   = InitDb (m k)
---   | StoreAndLookup LBS.ByteString ((Int64, LBS.ByteString) -> m k)
---   deriving (Generic1, Functor, HFunctor, Effect)
+data TestDb m k where
+  InitDb :: TestDb m ()
+  StoreAndLookup :: LBS.ByteString -> TestDb m (Int64, LBS.ByteString)
 
--- initDb :: (Has TestDb sig m) => m ()
--- initDb = send $ InitDb (pure ())
-
--- storeAndLookup :: (Has TestDb sig m) => LBS.ByteString -> m (Int64, LBS.ByteString)
--- storeAndLookup queryString = send $ StoreAndLookup queryString pure
+makeSem ''TestDb

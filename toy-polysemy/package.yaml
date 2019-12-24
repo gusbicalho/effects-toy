@@ -52,6 +52,7 @@ default-extensions:
 - OverloadedLabels
 - OverloadedStrings
 - PatternSynonyms
+- PolyKinds
 - RankNTypes
 - ScopedTypeVariables
 - StandaloneDeriving

@@ -10,18 +10,23 @@ import qualified Network.Wai.Handler.Warp as Warp
 import qualified Data.ByteString.Lazy as LBS
 import           Data.Function
 import           Data.String (fromString)
+-- importing effects for now, replace with interpreters later
+import           Polysemy
+import           Polysemy.Trace
+import           Polysemy.EffectsToy.Effect.WaiHandler
+import           Polysemy.EffectsToy.Effect.Db.TestDb
 
 start :: IO ()
 start = do
     runBaseStack initApp
-    Warp.run 8087 (runWaiApplication runBaseStack helloWorld)
+    Warp.run 8087 (runWaiApplication runBaseStack (return ()))
   where
     -- initApp = initDb
     initApp = return ()
 
-runBaseStack :: _ a -> IO a 
-runBaseStack = id
-                               
+runBaseStack :: _ a -> IO a
+runBaseStack = runM
+
 runWaiApplication :: ( Monad n
                      ) => (forall x. n x -> IO x)
                        -> _ ()
@@ -37,19 +42,18 @@ runWaiApplication runToIO waiApp request respond =
     -- toResponse (body, (headers, status)) = Wai.responseLBS status headers body
     toResponse _ = Wai.responseLBS HTTP.ok200 [] "hello, world"
 
--- helloWorld :: ( Has Trace sig m
---               , Has WaiHandler sig m
---               , Has TestDb sig m
---               ) => m ()
+helloWorld :: ( Member Trace r
+              , Member WaiHandler r
+              , Member TestDb r
+              ) => Sem r ()
 helloWorld = do
-  return ()
-  -- trace "Request received"
-  -- req <- askRequest
-  -- tellHeaders [(HTTP.hContentType, "text/plain")]
-  -- tellChunk "Hello, world!\n"
-  -- (reqId, str) <- req & Wai.rawQueryString 
-  --                     & LBS.fromStrict
-  --                     & storeAndLookup
-  -- tellChunk $ "You requested " <> str <> "\n"
-  -- tellChunk $ "Your request was number " <> (fromString $ show reqId)
-  -- putStatus HTTP.ok200
+  trace "Request received"
+  req <- askRequest
+  tellHeaders [(HTTP.hContentType, "text/plain")]
+  tellChunk "Hello, world!\n"
+  (reqId, str) <- req & Wai.rawQueryString
+                      & LBS.fromStrict
+                      & storeAndLookup
+  tellChunk $ "You requested " <> str <> "\n"
+  tellChunk $ "Your request was number " <> (fromString $ show reqId)
+  putStatus HTTP.ok200
