@@ -10,6 +10,7 @@ import qualified Network.Wai.Handler.Warp as Warp
 import qualified Data.ByteString.Lazy as LBS
 import           Data.Function
 import           Data.String (fromString)
+import qualified Polysemy.EffectsToy.Interpreter.ByteStream.Strict as BSStrict
 -- importing effects for now, replace with interpreters later
 import           Polysemy
 import           Polysemy.Trace
@@ -19,7 +20,7 @@ import           Polysemy.EffectsToy.Effect.Db.TestDb
 start :: IO ()
 start = do
     runBaseStack initApp
-    Warp.run 8087 (runWaiApplication runBaseStack (return ()))
+    Warp.run 8087 (runWaiApplication runBaseStack small)
   where
     -- initApp = initDb
     initApp = return ()
@@ -27,20 +28,24 @@ start = do
 runBaseStack :: _ a -> IO a
 runBaseStack = runM
 
-runWaiApplication :: ( Monad n
-                     ) => (forall x. n x -> IO x)
-                       -> _ ()
-                       -> Wai.Application
+runWaiApplication :: (forall x. Sem r x -> IO x)
+                     -> _ ()
+                     -> Wai.Application
 runWaiApplication runToIO waiApp request respond =
     waiApp
     -- & runWaiHandler request
-    -- & BSStrict.runByteStream
+    & BSStrict.runByteStream
     & runToIO
     & (fmap toResponse)
     & (>>= respond)
   where
     -- toResponse (body, (headers, status)) = Wai.responseLBS status headers body
-    toResponse _ = Wai.responseLBS HTTP.ok200 [] "hello, world"
+    toResponse (body, _) = Wai.responseLBS HTTP.ok200 [] body
+
+small :: ( Member BSStrict.ByteStream r
+         ) => Sem r ()
+small = do
+  BSStrict.tellChunk "hello, small world"
 
 helloWorld :: ( Member Trace r
               , Member WaiHandler r
