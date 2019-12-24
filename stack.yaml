@@ -9,6 +9,7 @@ resolver: nightly-2019-12-23
 packages:
 - toy-eff
 - toy-fused-effects
+- toy-polysemy
 
 extra-deps:
 - git: git@github.com:plcplc/sqlite-simple.git
@@ -24,3 +25,4 @@ extra-deps:
 - fused-effects-exceptions-1.0.0.0@sha256:ee32e6e6a40ce2272603b93036e05945d79f68200b1f09624db39262724b0f98,1731
 - fuzzy-0.1.0.0@sha256:123b9581c587ae5422b67bbad7e81186b1ecbf86941a8049f921ddf136f2234e,833
 - hie-bios-0.3.2@sha256:57a6b7a9270d4f365dd04c65a5e9c71e9d1e635e8fd29bcea4fd600f68b2f402,6964
+- polysemy-plugin-0.2.4.0@sha256:b27f399946e90d480271d2b655b6172ed80f9d421f871c21a804511bc7b0f53c,2952

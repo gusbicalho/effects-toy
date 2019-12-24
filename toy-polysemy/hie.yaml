@@ -1,0 +1,3 @@
+cradle:
+  stack:
+    component: "toy-polysemy:toy-polysemy-test"

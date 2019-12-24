@@ -83,6 +83,13 @@ packages:
       sha256: 7dba5f7c170c648c6d6b3aa19be89776aab981a61cc314db651f9ca68f75e2dc
   original:
     hackage: hie-bios-0.3.2@sha256:57a6b7a9270d4f365dd04c65a5e9c71e9d1e635e8fd29bcea4fd600f68b2f402,6964
+- completed:
+    hackage: polysemy-plugin-0.2.4.0@sha256:b27f399946e90d480271d2b655b6172ed80f9d421f871c21a804511bc7b0f53c,2952
+    pantry-tree:
+      size: 1232
+      sha256: cb625393a44faa3c25e513c7df89742b5bbe457533f8f2ebf37bc6a32bf10423
+  original:
+    hackage: polysemy-plugin-0.2.4.0@sha256:b27f399946e90d480271d2b655b6172ed80f9d421f871c21a804511bc7b0f53c,2952
 snapshots:
 - completed:
     size: 439428
