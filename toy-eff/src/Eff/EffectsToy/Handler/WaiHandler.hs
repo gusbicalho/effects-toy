@@ -21,9 +21,13 @@ type instance Handles WaiHandlerByteStreamT eff = eff == WaiHandler
 
 instance (Monad m, ByteStream.ByteStream m) => WaiHandler (WaiHandlerByteStreamT m) where
   askRequest          = HandlerT $ ask
+  {-# INLINE askRequest #-}
   tellHeaders headers = HandlerT $ tell headers
+  {-# INLINE tellHeaders #-}
   putStatus status    = HandlerT $ put status
+  {-# INLINE putStatus #-}
   tellChunk chunk     = HandlerT $ ByteStream.tellChunk chunk
+  {-# INLINE tellChunk #-}
 
 runWaiHandler :: Monad m => Wai.Request -> EffT WaiHandlerByteStreamT m () -> m (HTTP.ResponseHeaders, HTTP.Status)
 runWaiHandler request waiApp = do

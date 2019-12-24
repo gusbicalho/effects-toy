@@ -16,6 +16,10 @@ class Monad m => WaiHandler m where
 
 instance (Monad (t m), Send WaiHandler t m) => WaiHandler (EffT t m) where
   askRequest = send @WaiHandler askRequest
+  {-# INLINE askRequest #-}
   tellHeaders headers = send @WaiHandler (tellHeaders headers)
+  {-# INLINE tellHeaders #-}
   putStatus status = send @WaiHandler (putStatus status)
+  {-# INLINE putStatus #-}
   tellChunk chunk = send @WaiHandler (tellChunk chunk)
+  {-# INLINE tellChunk #-}

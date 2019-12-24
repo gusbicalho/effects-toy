@@ -13,6 +13,7 @@ type instance Handles IOEffectT eff = eff == IOEffect
 
 instance MonadIO m => IOEffect (IOEffectT m) where
   sendIO ioAction = liftIO ioAction
+  {-# INLINE sendIO #-}
 
 runIOEffect :: EffT IOEffectT m a -> m a
 runIOEffect = runHandlerT . runEffT
