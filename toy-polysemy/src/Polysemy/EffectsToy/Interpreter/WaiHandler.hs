@@ -20,9 +20,10 @@ runWaiHandler' request = runWriter @HTTP.ResponseHeaders
                        . runState HTTP.status500
                        . runReader request
                        . reinterpret3 \case
-                          AskRequest      -> ask
-                          PutStatus status -> put status
-                          TellChunk chunk -> ByteStream.tellChunk chunk
+                          AskRequest          -> ask
+                          PutStatus status    -> put status
+                          TellHeaders headers -> tell headers
+                          TellChunk chunk     -> ByteStream.tellChunk chunk
 
 runWaiHandler :: ( Member ByteStream.ByteStream r
                  ) => Wai.Request -> Sem (WaiHandler : r) () -> Sem r (HTTP.ResponseHeaders, HTTP.Status)
