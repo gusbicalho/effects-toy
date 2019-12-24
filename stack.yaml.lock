@@ -63,13 +63,6 @@ packages:
   original:
     hackage: semigroups-0.18.5@sha256:41ef9f5f183f66c519c5cddcb3fbfdbc9b67a2b7bfae7d81f91de9ff7367d8c6,5828
 - completed:
-    hackage: streaming-bytestring-0.1.6@sha256:5518d9480b703d2ecf9bbb0d4c76d63053daa99eb08589af4225be72eaf4b36e,12850
-    pantry-tree:
-      size: 545
-      sha256: 7bd150e35e3c412ab9655ce42a8bca154ee8779d1f9f4ba01310b429e651e770
-  original:
-    hackage: streaming-bytestring-0.1.6@sha256:5518d9480b703d2ecf9bbb0d4c76d63053daa99eb08589af4225be72eaf4b36e,12850
-- completed:
     hackage: fused-effects-exceptions-1.0.0.0@sha256:ee32e6e6a40ce2272603b93036e05945d79f68200b1f09624db39262724b0f98,1731
     pantry-tree:
       size: 520

@@ -70,8 +70,6 @@ dependencies:
 - http-types
 - mtl
 - sqlite-simple
-- streaming
-- streaming-bytestring
 - text
 - time
 - wai

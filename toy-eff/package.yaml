@@ -71,8 +71,6 @@ dependencies:
 - monad-control
 - mtl
 - sqlite-simple
-- streaming
-- streaming-bytestring
 - text
 - time
 - wai
