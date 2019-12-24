@@ -32,10 +32,8 @@ runBaseStack = runM @IO
                                
 runWaiApplication :: ( Monad n
                      ) => (forall x. n x -> IO x)
-                       -> WaiHandlerC _ ()
-                       -> Wai.Request
-                       -> (Wai.Response -> IO b)
-                       -> IO b
+                       -> _ ()
+                       -> Wai.Application
 runWaiApplication runToIO waiApp request respond = do
     response <- (fmap toResponse)
                 . runToIO
