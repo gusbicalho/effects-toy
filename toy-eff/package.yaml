@@ -67,6 +67,7 @@ dependencies:
 - bytestring
 - eff
 - http-types
+- lifted-base
 - monad-control
 - mtl
 - sqlite-simple
