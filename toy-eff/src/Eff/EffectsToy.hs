@@ -11,6 +11,7 @@ import qualified Data.ByteString.Lazy as LBS
 import Eff.EffectsToy.Handler.IOEffect
 import qualified Eff.EffectsToy.Handler.ByteStream.Strict as BSStrict
 import Eff.EffectsToy.Handler.WaiHandler
+import Eff.EffectsToy.Handler.Trace.StdOut
 
 start :: IO ()
 start = Warp.run 8087 (runWaiApplication helloWorld)
@@ -18,14 +19,15 @@ start = Warp.run 8087 (runWaiApplication helloWorld)
 runWaiApplication :: _ () -> Wai.Application
 runWaiApplication waiApp request respond = do
   (body, (headers, status)) <- runIOEffect
+                               . runTrace
                                . BSStrict.runByteStream
                                . runWaiHandler request
                                $ waiApp
   respond $ Wai.responseLBS status headers body
 
-helloWorld :: (WaiHandler m, IOEffect m) => m ()
+helloWorld :: (WaiHandler m, Trace m) => m ()
 helloWorld = do
-  sendIO $ putStrLn "Request received"
+  trace "Request received"
   req <- askRequest
   tellHeaders [(HTTP.hContentType, "text/plain")]
   tellChunk "Hello, world!\n"
