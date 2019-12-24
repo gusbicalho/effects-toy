@@ -11,10 +11,10 @@ import qualified Data.ByteString.Lazy as LBS
 import           Data.Function
 import           Data.String (fromString)
 import qualified Polysemy.EffectsToy.Interpreter.ByteStream.Strict as BSStrict
+import           Polysemy.EffectsToy.Interpreter.WaiHandler
 -- importing effects for now, replace with interpreters later
 import           Polysemy
 import           Polysemy.Trace
-import           Polysemy.EffectsToy.Effect.WaiHandler
 import           Polysemy.EffectsToy.Effect.Db.TestDb
 
 start :: IO ()
@@ -33,19 +33,20 @@ runWaiApplication :: (forall x. Sem r x -> IO x)
                      -> Wai.Application
 runWaiApplication runToIO waiApp request respond =
     waiApp
-    -- & runWaiHandler request
+    & runWaiHandler request
     & BSStrict.runByteStream
     & runToIO
     & (fmap toResponse)
     & (>>= respond)
   where
-    -- toResponse (body, (headers, status)) = Wai.responseLBS status headers body
-    toResponse (body, _) = Wai.responseLBS HTTP.ok200 [] body
+    toResponse (body, (headers, status)) = Wai.responseLBS status headers body
 
-small :: ( Member BSStrict.ByteStream r
+small :: ( Member WaiHandler r
          ) => Sem r ()
 small = do
-  BSStrict.tellChunk "hello, small world"
+  tellChunk "hello, small world"
+  tellHeaders [(HTTP.hContentType, "text/plain")]
+  putStatus HTTP.ok200
 
 helloWorld :: ( Member Trace r
               , Member WaiHandler r
