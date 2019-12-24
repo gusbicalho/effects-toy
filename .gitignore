@@ -1,3 +1,5 @@
 .stack-work/
 effects-toy.cabal
+toy-fused-effects/toy-fused-effects.cabal
+toy-eff/toy-eff.cabal
 *~
