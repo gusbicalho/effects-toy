@@ -3,5 +3,7 @@
   "editor.detectIndentation": false,
   "editor.autoIndent": "advanced",
   "editor.tabSize": 2,
-  "haskell.indentationRules.enabled": false
+  "haskell.indentationRules.enabled": false,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true
 }
